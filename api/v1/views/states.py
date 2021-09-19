@@ -24,3 +24,12 @@ def state_by_id(state_id):
     if state is not None:
         return jsonify(state.to_dict())
     return jsonify({"error": "Not found"}), 404
+
+@app_views.route('/states/<state_id>', strict_slashes=False, methods=['DELETE'])
+def delete_state_by_id(state_id):
+    state = storage.get(State, state_id)
+    if state is not None:
+        storage.delete(state)
+        storage.save()
+        return jsonify({}), 200
+    return jsonify({"error": "Not found"}), 404
