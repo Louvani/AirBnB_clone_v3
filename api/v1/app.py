@@ -4,7 +4,7 @@
 from os import getenv
 
 from api.v1.views import app_views
-from flask import Flask, render_template
+from flask import Flask, render_template, jsonify
 from models import storage
 
 app = Flask(__name__)
@@ -17,8 +17,8 @@ def teardown_db(exception):
     storage.close()
 
 
-@app.error_handler(404)
-def not_found():
+@app.errorhandler(404)
+def not_found(e):
     return jsonify({"error": "Not found"})
 
 
