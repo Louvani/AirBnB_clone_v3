@@ -23,11 +23,10 @@ def cities_by_state_id(state_id):
         return jsonify(cities_list)
 
     if request.method == 'POST':
-
-        if not request.get_json():
-            abort(400, description='Not a JSON')
-
         data = request.get_json()
+
+        if not data:
+            abort(400, description='Not a JSON')
 
         if 'name' not in data.keys():
             abort(400, description='Missing name')
