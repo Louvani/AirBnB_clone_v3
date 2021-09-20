@@ -24,7 +24,7 @@ def states():
         data = request.get_json()
         if 'name' not in data.keys():
             abort(400, description='Missing name')
-        new_state = State(name=data['name'])
+        new_state = State(**data)
         new_state.save()
         return jsonify(new_state.to_dict()), 201
 
