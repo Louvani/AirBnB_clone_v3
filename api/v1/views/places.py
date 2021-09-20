@@ -34,7 +34,7 @@ def places_by_city_id(city_id):
         if 'name' not in data.keys():
             abort(400, description='Missing name')
 
-        user = storage.get(User, user_id)
+        user = storage.get(User, data['user_id'])
         if user is None:
             abort(404)
 
