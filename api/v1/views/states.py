@@ -1,10 +1,9 @@
 #!/usr/bin/python3
 """States"""
 from api.v1.views import app_views
-from flask import Flask, jsonify, redirect, request, abort
+from flask import jsonify, request, abort, make_response
 from models import storage
 from models.state import State
-from api.v1.app import not_found
 
 
 @app_views.route('/states', strict_slashes=False, methods=['GET', 'POST'])
@@ -14,7 +13,7 @@ def states():
         states_dict = storage.all(State)
         #  Iterate -> to dict -> save in list
         states_list = [state.to_dict() for state in states_dict.values()]
-        print(states_list)
+        # print(states_list)
         return jsonify(states_list)
 
     if request.method == 'POST':
@@ -25,7 +24,7 @@ def states():
             abort(400, description='Missing name')
         new_state = State(**data)
         new_state.save()
-        return jsonify(new_state.to_dict()), 201
+        return make_response(jsonify(new_state.to_dict()), 201)
 
 
 @app_views.route(
@@ -42,7 +41,7 @@ def state_by_id(state_id):
         if state is not None:
             storage.delete(state)
             # storage.save()
-            return jsonify({}), 200
+            return make_response(jsonify({}), 200)
         abort(404)
     if request.method == 'PUT':
         state = storage.get(State, state_id)
@@ -56,4 +55,4 @@ def state_by_id(state_id):
             if key not in attributes_to_ignore:
                 setattr(state, key, value)
         state.save()
-        return jsonify(state.to_dict()), 200
+        return make_response(jsonify(state.to_dict()), 200)
