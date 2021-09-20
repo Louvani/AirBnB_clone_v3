@@ -13,7 +13,7 @@ def states():
         states_dict = storage.all(State)
         #  Iterate -> to dict -> save in list
         states_list = [state.to_dict() for state in states_dict.values()]
-        # print(states_list)
+        print(states_list)
         return jsonify(states_list)
 
     if request.method == 'POST':
