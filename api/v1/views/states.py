@@ -39,8 +39,8 @@ def state_by_id(state_id):
     if request.method == 'DELETE':
         state = storage.get(State, state_id)
         if state is not None:
-            storage.delete(state)
-            # storage.save()
+            state.delete()
+            storage.save()
             return make_response(jsonify({}), 200)
         abort(404)
     if request.method == 'PUT':
