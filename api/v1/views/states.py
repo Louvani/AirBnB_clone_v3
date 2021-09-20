@@ -16,8 +16,9 @@ def states():
         states_list = [state.to_dict() for state in states_dict.values()]
         print(states_list)
         return jsonify(states_list)
+
     if request.method == 'POST':
-        if not request.json:
+        if not request.get_json():
             abort(400, description='Not a JSON')
         data = request.get_json()
         if 'name' not in data.keys():
@@ -39,15 +40,15 @@ def state_by_id(state_id):
     if request.method == 'DELETE':
         state = storage.get(State, state_id)
         if state is not None:
-            state.delete()
-            storage.save()
+            storage.delete(state)
+            # storage.save()
             return jsonify({}), 200
         abort(404)
     if request.method == 'PUT':
         state = storage.get(State, state_id)
         if state is None:
             abort(404)
-        if not request.json:
+        if not request.get_json():
             abort(400, description='Not a JSON')
         data = request.get_json()
         attributes_to_ignore = ['id', 'created_at', 'updated_at']
