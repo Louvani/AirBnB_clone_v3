@@ -2,14 +2,14 @@
 '''first endpoint (route) will be to return the status of your API'''
 
 from os import getenv
-
 from api.v1.views import app_views
 from flask import Flask, render_template, jsonify, make_response
 from models import storage
+from flask_cors import CORS
 
 app = Flask(__name__)
-
 app.register_blueprint(app_views)
+cors = CORS(app, resources={r"/api/*": {"origins": "0.0.0.0"}})
 
 
 @app.errorhandler(404)
