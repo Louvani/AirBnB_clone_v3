@@ -2,7 +2,7 @@
 """States"""
 
 from api.v1.views import app_views
-from flask import Flask, jsonify, redirect, request
+from flask import Flask, jsonify, redirect, request, abort
 from models import storage
 from models.state import State
 from api.v1.app import not_found
@@ -60,5 +60,5 @@ def state_by_id(state_id):
         for key, value in data.items():
             if key not in attributes_to_ignore:
                 setattr(state, key, value)
-        storage.save()
+        state.save()
         return jsonify(state.to_dict()), 200
